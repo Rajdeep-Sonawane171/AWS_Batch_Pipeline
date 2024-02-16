@@ -47,11 +47,11 @@ else:
         existingDyanmoDfRenamed = existingDyanmoDf.select("emp_name").withColumnRenamed("emp_name","existing_employee_name")
         
         print("Perform Join condition")
-        joinedDf = incrementalEmpDf.join(existingDyanmoDfRenamed, incrementalEmpDf.emp_name == existingDyanmoDfRenamed.emp_name, "left")
+        joinedDf = incrementalEmpDf.join(existingDyanmoDfRenamed, incrementalEmpDf.emp_name == existingDyanmoDfRenamed.existing_employee_name, "left")
         
         print("Number of records after join = ",joinedDf.count())
         resultDf = joinedDf.filter("existing_employee_name is null")
-        resultDf.drop("existing_employee_name")
+        resultDf = resultDf.drop("existing_employee_name")
     else:
         print("Dynamo DB Table is empty, so no join will happen")
         resultDf = incrementalEmpDf
